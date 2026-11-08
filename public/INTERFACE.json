@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "purpose": "Public fictional CI proof for the same release guard used by the Source publisher.",
+  "entry": {
+    "module": "lib/public-release-entry.mjs",
+    "export": "qualifyPublicRelease",
+    "options": [
+      "sourceDirectory",
+      "manifestPath",
+      "expectedManifestSHA256",
+      "destinationDirectory",
+      "contractOptions"
+    ]
+  },
+  "command": "node ci/run-public-release.mjs",
+  "selector": {
+    "version": 1,
+    "candidate": "clean"
+  },
+  "candidates": [
+    "clean",
+    "unsafe"
+  ],
+  "assetsPerFixture": 2,
+  "fixtureBoundary": "Fictional modules are digest metadata only. No private configuration, credentials, account identity, compiled Main or 938 hosted assets are included. The inherited actualClean938ThroughReviewedSourceAdapter field name is ABI only; its actual count is two. Unsafe candidate is intentionally unable to reuse a clean witness for its changed manifest, but the mandatory public byte guard must reject its synthetic private-key marker first.",
+  "expectedUnsafe": {
+    "code": "UNSAFE_PUBLIC_TEXT",
+    "rule": "private_key",
+    "actualRunConclusion": "failure"
+  },
+  "expectedClean": {
+    "actualRunConclusion": "success"
+  },
+  "sourceHelperPins": {
+    "gate": {
+      "path": "lib/reviewed-asset-gate.mjs",
+      "bytes": 16893,
+      "sha256": "fd3f7fb3049d9d85449abda97feba30cac10aafe87dab39fb976541210ba4c56"
+    },
+    "adapter": {
+      "path": "source-owned/source-publisher-adapter.mjs",
+      "bytes": 10995,
+      "sha256": "ec61e5f64b1bae4b058764aa838ebb87671621cafb8a399944b48c2c9f2ce4eb"
+    },
+    "validator": {
+      "path": "lib/release-manifest-contract.mjs",
+      "bytes": 10503,
+      "sha256": "770e4379d241a0c3752a514ae1c5cefd4cca660065a288fd61d0ed9309b5777d"
+    },
+    "safety": {
+      "path": "lib/safety.mjs",
+      "bytes": 5458,
+      "sha256": "96664d2912d412c200209165d2752f34d4a125fd64d55dd709b9b8e02913c983"
+    }
+  }
+}

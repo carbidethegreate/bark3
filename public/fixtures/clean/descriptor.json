@@ -1,0 +1,38 @@
+{
+  "fixture": "Fictional two-asset CI candidate; legacy ABI key does not assert 938 assets.",
+  "base": {
+    "version": "fictional-base-version",
+    "deployment": "fictional-base-deployment",
+    "workerSHA256": "709064bebf4fd9cf162cb99acc440ac0a00510f14d77f8ccf476f4deb535285a"
+  },
+  "candidateModules": [
+    {
+      "name": "worker.bundle.mjs",
+      "bytes": 49,
+      "sha256": "709064bebf4fd9cf162cb99acc440ac0a00510f14d77f8ccf476f4deb535285a"
+    },
+    {
+      "name": "card-renderer.wasm",
+      "bytes": 8,
+      "sha256": "93a44bbb96c751218e4c00d479e4c14358122a389acca16205b1e4d0dc5f9476"
+    }
+  ],
+  "publicAssets": {
+    "path": "fixtures/clean/manifest.json",
+    "bytes": 306,
+    "sha256": "912d7d0238799bdfd56d48817a3dc03060abec5e34786339316997ee26f5b8e0"
+  },
+  "deploymentScopeSHA256": "8f467e00268e9068169fe8e768d362c9ced03d97834d8bcbb2496c5873dc8fd8",
+  "preSRequired": {
+    "actualClean938ThroughReviewedSourceAdapter": {
+      "path": "fixtures/clean/clean-receipt.json",
+      "bytes": 1469,
+      "sha256": "f5854f0bdb6ac4c7c26f0228713be1978b35854b669b9462486d76f80461e830"
+    },
+    "actualUnsafeControlRefusedBeforeCLI": {
+      "path": "fixtures/clean/unsafe-receipt.json",
+      "bytes": 767,
+      "sha256": "ee7700542c51e0920167c097cdc99fce3c80e5b1ee29ce2de97091e951a7dc85"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "fixture": "Actual refusal of fictional synthetic marker; no key material.",
+  "state": "REFUSED_BEFORE_READY_OR_CLI",
+  "adapterSHA256": "ec61e5f64b1bae4b058764aa838ebb87671621cafb8a399944b48c2c9f2ce4eb",
+  "gateSHA256": "fd3f7fb3049d9d85449abda97feba30cac10aafe87dab39fb976541210ba4c56",
+  "manifestAndModulePinsMatched": true,
+  "cleanup": {
+    "upstream": {
+      "state": "not_created",
+      "filesRemoved": null,
+      "directoriesRemoved": null
+    },
+    "gateInvoked": true,
+    "assetsAdopted": false,
+    "disposition": "removed_owned_partial",
+    "outerRecursiveDeletion": false,
+    "outerUnlinks": 2,
+    "outerRmdirs": 2,
+    "currentStageIdentityVerified": true,
+    "publicationReady": false
+  },
+  "providerCalls": 0,
+  "CLIInvocations": 0
+}

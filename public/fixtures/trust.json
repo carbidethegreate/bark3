@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "descriptorPins": {
+    "clean": {
+      "path": "fixtures/clean/descriptor.json",
+      "bytes": 1324,
+      "sha256": "112a2bdf4efcaacff6079c8d887688252596d50e6e148b85eb7186df4a68d911"
+    },
+    "unsafe": {
+      "path": "fixtures/unsafe/descriptor.json",
+      "bytes": 1327,
+      "sha256": "2380a84111b568aa9fc83d5866f926f13bb497163001d883cdf5916cec467fb0"
+    }
+  },
+  "expectedDeploymentScopeSHA256": "8f467e00268e9068169fe8e768d362c9ced03d97834d8bcbb2496c5873dc8fd8",
+  "expectedModules": [
+    {
+      "name": "worker.bundle.mjs",
+      "bytes": 49,
+      "sha256": "709064bebf4fd9cf162cb99acc440ac0a00510f14d77f8ccf476f4deb535285a"
+    },
+    {
+      "name": "card-renderer.wasm",
+      "bytes": 8,
+      "sha256": "93a44bbb96c751218e4c00d479e4c14358122a389acca16205b1e4d0dc5f9476"
+    }
+  ],
+  "expectedAdapterPin": {
+    "path": "source-owned/source-publisher-adapter.mjs",
+    "bytes": 10995,
+    "sha256": "ec61e5f64b1bae4b058764aa838ebb87671621cafb8a399944b48c2c9f2ce4eb"
+  },
+  "expectedGatePin": {
+    "path": "lib/reviewed-asset-gate.mjs",
+    "bytes": 16893,
+    "sha256": "fd3f7fb3049d9d85449abda97feba30cac10aafe87dab39fb976541210ba4c56"
+  }
+}

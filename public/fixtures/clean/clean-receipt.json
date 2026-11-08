@@ -1,0 +1,45 @@
+{
+  "fixture": "Fictional two-asset Source adapter observation; no live Worker/config/provider.",
+  "adapter": {
+    "path": "source-owned/source-publisher-adapter.mjs",
+    "bytes": 10995,
+    "sha256": "ec61e5f64b1bae4b058764aa838ebb87671621cafb8a399944b48c2c9f2ce4eb"
+  },
+  "gate": {
+    "path": "lib/reviewed-asset-gate.mjs",
+    "bytes": 16893,
+    "sha256": "fd3f7fb3049d9d85449abda97feba30cac10aafe87dab39fb976541210ba4c56"
+  },
+  "actualManifest": {
+    "path": "fixtures/clean/manifest.json",
+    "bytes": 306,
+    "sha256": "912d7d0238799bdfd56d48817a3dc03060abec5e34786339316997ee26f5b8e0"
+  },
+  "publicReceipt": {
+    "state": "PUBLIC_GATE_AWAITED_BEFORE_CONFIG_READY",
+    "manifestSHA256": "912d7d0238799bdfd56d48817a3dc03060abec5e34786339316997ee26f5b8e0",
+    "assets": 2,
+    "modules": [
+      {
+        "name": "card-renderer.wasm",
+        "bytes": 8,
+        "sha256": "93a44bbb96c751218e4c00d479e4c14358122a389acca16205b1e4d0dc5f9476"
+      },
+      {
+        "name": "worker.bundle.mjs",
+        "bytes": 49,
+        "sha256": "709064bebf4fd9cf162cb99acc440ac0a00510f14d77f8ccf476f4deb535285a"
+      }
+    ],
+    "moduleScanRootFiles": 2,
+    "nonLocationConfigFieldsUnchanged": true,
+    "outdirOutsideModuleScanRoot": true,
+    "providerCalls": 0
+  },
+  "stagedPublicFiles": 2,
+  "stagedPublicBytes": 155,
+  "stagedTwoModulePinsMatch": true,
+  "privateConfigurationNonLocationFieldsExact": true,
+  "providerCalls": 0,
+  "CLIInvocations": 0
+}

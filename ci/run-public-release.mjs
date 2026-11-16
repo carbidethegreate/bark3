@@ -7,11 +7,11 @@ import {createHash} from 'node:crypto';
 const root=fileURLToPath(new URL('../',import.meta.url));
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
 const fail=code=>{const error=new Error('Public CI input rejected ['+code+']');error.code=code;throw error;};
-// Exact Source FROZEN-PUBLIC-INPUTS.json receipt, 9f5f026d...; no discovered paths.
+// The original frozen inputs remain pinned, with the versioned interface and marker fixture additions.
 const pins={
  "public/INTERFACE.json": {
-  "bytes": 1937,
-  "sha256": "647e86c6050c999475be9d5952030f069abfe1c6c16b9150cbe6b4fd6b7f38f0"
+  "bytes": 2427,
+  "sha256": "62248627c3418a5f2f844306302034e2a1521a285a86cf978e34cad3f284b938"
  },
  "public/fixtures/clean/assets/index.html": {
   "bytes": 94,
@@ -36,6 +36,22 @@ const pins={
  "public/fixtures/clean/unsafe-receipt.json": {
   "bytes": 767,
   "sha256": "ee7700542c51e0920167c097cdc99fce3c80e5b1ee29ce2de97091e951a7dc85"
+ },
+ "public/fixtures/demo-marker/assets/index.html": {
+  "bytes": 122,
+  "sha256": "65482b79eb3bd8ee1382c934bbb32ccbf99f625a53845a2e1e5b090d1770bc46"
+ },
+ "public/fixtures/demo-marker/assets/styles.css": {
+  "bytes": 61,
+  "sha256": "4e8254d7de3294339fc36d5685366aa3c3a1b7262504c6c4ad9bf4e327ac8633"
+ },
+ "public/fixtures/demo-marker/descriptor.json": {
+  "bytes": 1368,
+  "sha256": "fa28cda2c28be38a7bba68ecde4a675d31a6036270b269dd0f18828a565f919f"
+ },
+ "public/fixtures/demo-marker/manifest.json": {
+  "bytes": 307,
+  "sha256": "db90200ccb7e4c0640df8eea921f47009e970db618ca9069e8d3cb17ce9e3858"
  },
  "public/fixtures/trust.json": {
   "bytes": 1186,
@@ -106,11 +122,15 @@ function json(bytes,code='INVALID_TRUST'){
 function select(){
  if(process.argv.length!==2)fail('INVALID_SELECTOR');
  const bytes=readFixed('candidate.json'),value=json(bytes,'INVALID_SELECTOR'),text=bytes.toString('utf8');
- if(!value||Object.getPrototypeOf(value)!==Object.prototype||Object.keys(value).sort().join(',')!=='candidate,version'||value.version!==1||!['clean','unsafe'].includes(value.candidate)||(text.match(/"(?:\\[\s\S]|[^"\\])*"\s*:/g)??[]).length!==2)fail('INVALID_SELECTOR');
+ if(!value||Object.getPrototypeOf(value)!==Object.prototype||Object.keys(value).sort().join(',')!=='candidate,version'||value.version!==1||!['clean','unsafe','demo-marker'].includes(value.candidate)||(text.match(/"(?:\\[\s\S]|[^"\\])*"\s*:/g)??[]).length!==2)fail('INVALID_SELECTOR');
  return value.candidate;
 }
 function fixture(candidate){
- const prefix='public/fixtures/'+candidate+'/',descriptor=readFixed(prefix+'descriptor.json'),manifest=readFixed(prefix+'manifest.json'),cleanReceipt=readFixed(prefix+'clean-receipt.json'),unsafeReceipt=readFixed(prefix+'unsafe-receipt.json');
+ const prefix='public/fixtures/'+candidate+'/';
+ const descriptorPath=prefix+'descriptor.json',manifestPath=prefix+'manifest.json';
+ const descriptor=readFixed(descriptorPath),manifest=readFixed(manifestPath);
+ const witnessPrefix=candidate==='demo-marker'?'public/fixtures/clean/':prefix;
+ const cleanReceipt=readFixed(witnessPrefix+'clean-receipt.json'),unsafeReceipt=readFixed(witnessPrefix+'unsafe-receipt.json');
  const trust=record(json(readFixed('public/fixtures/trust.json')),['version','descriptorPins','expectedDeploymentScopeSHA256','expectedModules','expectedAdapterPin','expectedGatePin']);
  if(trust.version!==1)fail('INVALID_TRUST');record(trust.descriptorPins,['clean','unsafe']);
  for(const choice of ['clean','unsafe']){
@@ -120,8 +140,12 @@ function fixture(candidate){
  record(trust.expectedAdapterPin,['path','bytes','sha256']);record(trust.expectedGatePin,['path','bytes','sha256']);
  if(!Array.isArray(trust.expectedModules)||trust.expectedModules.length!==2)fail('INVALID_TRUST');
  for(const row of trust.expectedModules)record(row,['name','bytes','sha256']);
- const contractOptions={descriptor:json(descriptor),descriptorPin:trust.descriptorPins[candidate],publicBytes:{descriptor,manifest,cleanReceipt,unsafeReceipt,gateSource:readFixed('public/lib/reviewed-asset-gate.mjs')},expectedDeploymentScopeSHA256:trust.expectedDeploymentScopeSHA256,expectedModules:trust.expectedModules,expectedAdapterPin:trust.expectedAdapterPin,expectedGatePin:trust.expectedGatePin};
- return {sourceDirectory:path.join(root,prefix,'assets'),manifestPath:path.join(root,prefix,'manifest.json'),expectedManifestSHA256:pins[prefix+'manifest.json'].sha256,contractOptions,manifest:json(manifest)};
+ // The negative control pins its own changed descriptor and retains the actual clean witness.
+ const descriptorPin=candidate==='demo-marker'
+  ? {path:'fixtures/demo-marker/descriptor.json',...pins[descriptorPath]}
+  : trust.descriptorPins[candidate];
+ const contractOptions={descriptor:json(descriptor),descriptorPin,publicBytes:{descriptor,manifest,cleanReceipt,unsafeReceipt,gateSource:readFixed('public/lib/reviewed-asset-gate.mjs')},expectedDeploymentScopeSHA256:trust.expectedDeploymentScopeSHA256,expectedModules:trust.expectedModules,expectedAdapterPin:trust.expectedAdapterPin,expectedGatePin:trust.expectedGatePin};
+ return {sourceDirectory:path.join(root,prefix,'assets'),manifestPath:path.join(root,manifestPath),expectedManifestSHA256:pins[manifestPath].sha256,contractOptions,manifest:json(manifest)};
 }
 function cleanup(owned,manifest){
  if(!owned)return 'not_created';
@@ -153,7 +177,7 @@ try{
  const {qualifyPublicRelease}=await import('../lib/public-release-entry.mjs');
  const tempRoot=fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()),'barkive-public-release-'));owned={root:tempRoot,stat:stat(tempRoot)};
  const {manifest:unused,...options}=input;
- receipt=await qualifyPublicRelease({...options,destinationDirectory:path.join(tempRoot,'qualified')});
+ receipt=await qualifyPublicRelease({...options,destinationDirectory:path.join(tempRoot,'qualified')},{rejectPrototype:true});
 }catch(caught){error=caught;}
 const disposition=cleanup(owned,manifest),temporaryRemoved=disposition!=='preserved_unverified_tree';
 if(!temporaryRemoved&&!error){error=new Error('Temporary cleanup refused');error.code='TEMPORARY_CLEANUP_REFUSED';}

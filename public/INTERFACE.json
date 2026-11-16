@@ -10,7 +10,10 @@
       "expectedManifestSHA256",
       "destinationDirectory",
       "contractOptions"
-    ]
+    ],
+    "publicCIPolicy": {
+      "rejectPrototype": true
+    }
   },
   "command": "node ci/run-public-release.mjs",
   "selector": {
@@ -19,10 +22,11 @@
   },
   "candidates": [
     "clean",
-    "unsafe"
+    "unsafe",
+    "demo-marker"
   ],
   "assetsPerFixture": 2,
-  "fixtureBoundary": "Fictional modules are digest metadata only. No private configuration, credentials, account identity, compiled Main or 938 hosted assets are included. The inherited actualClean938ThroughReviewedSourceAdapter field name is ABI only; its actual count is two. Unsafe candidate is intentionally unable to reuse a clean witness for its changed manifest, but the mandatory public byte guard must reject its synthetic private-key marker first.",
+  "fixtureBoundary": "Fictional modules are digest metadata only. No private configuration, credentials, account identity, compiled Main or 938 hosted assets are included. The inherited actualClean938ThroughReviewedSourceAdapter field name is ABI only; its actual count is two. Unsafe candidate is intentionally unable to reuse a clean witness for its changed manifest, but the mandatory public byte guard must reject its synthetic private-key marker first. The demo-marker candidate changes only an HTML comment and its manifest and descriptor pins. It reuses the original clean and secret witnesses. The strict public CI stage check refuses that fixture before contract validation. The CLI selector does not choose the scan policy.",
   "expectedUnsafe": {
     "code": "UNSAFE_PUBLIC_TEXT",
     "rule": "private_key",
@@ -52,5 +56,10 @@
       "bytes": 5458,
       "sha256": "96664d2912d412c200209165d2752f34d4a125fd64d55dd709b9b8e02913c983"
     }
+  },
+  "expectedDemoMarker": {
+    "code": "UNSAFE_PUBLIC_TEXT",
+    "rule": "prototype_marker",
+    "actualRunConclusion": "failure"
   }
 }

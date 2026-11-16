@@ -1,0 +1,14 @@
+{
+  "files": [
+    {
+      "path": "index.html",
+      "bytes": 122,
+      "sha256": "65482b79eb3bd8ee1382c934bbb32ccbf99f625a53845a2e1e5b090d1770bc46"
+    },
+    {
+      "path": "styles.css",
+      "bytes": 61,
+      "sha256": "4e8254d7de3294339fc36d5685366aa3c3a1b7262504c6c4ad9bf4e327ac8633"
+    }
+  ]
+}
